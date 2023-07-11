@@ -1,9 +1,6 @@
 name: PyLint
 
-on:
-  push:
-    paths:
-      - "./example/django_demo"
+on: [push, pull_request]
 
 jobs:
   pylint:
@@ -16,6 +13,8 @@ jobs:
       - uses: psf/black@stable
         with:
           options: "--check --verbose --line-length=120"
+          src: "./example/django_demo"
       - uses: py-actions/flake8@v2
         with:
           max-line-length: "120"
+          path: "./example/django_demo"

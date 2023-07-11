@@ -1,0 +1,43 @@
+version: "3.9"
+
+services:
+
+  webapp:
+    container_name: webapp
+    restart: always
+    build: ./webapp
+    entrypoint: [ "/webapp/entrypoint.sh" ]
+    volumes:
+      - ./webapp/:/webapp/
+      - mediafiles:/webapp/webapp/mediafiles
+    ports:
+      - 8000:8000
+    depends_on:
+      postgres:
+        condition: service_healthy
+
+  nsfwjsapi:
+    container_name: nsfwjsapi
+    restart: always
+    build: ./nsfwjsapi
+    volumes:
+      - ./nsfwjsapi:/usr/src/app
+      - /usr/src/app/node_modules
+    ports:
+      - 8001:8080
+
+  postgres:
+    container_name: postgres
+    restart: always
+    image: postgres:15.2-alpine
+    volumes:
+      - postgres_data:/var/lib/postgresql/data/
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -U postgres" ]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+volumes:
+  postgres_data:
+  mediafiles:

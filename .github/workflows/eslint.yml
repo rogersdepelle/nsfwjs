@@ -1,9 +1,6 @@
 name: ESLint
 
-on:
-  push:
-    paths:
-      - "./example/django_demo/nsfwjsapi"
+on: [push, pull_request]
 
 jobs:
   eslint:
@@ -13,8 +10,11 @@ jobs:
       - uses: actions/setup-node@v3
         with:
           node-version: 20
-      - run: npm ci
-      - uses: sibiraj-s/action-eslint@v2
+      - name: npm install
+        working-directory: ./example/django_demo/nsfwjsapi
+        run: npm i --ignore-scripts
+      - name: Run ESLint
+        uses: ninosaurus/eslint-check@v5
         with:
-          eslint-args: "--quiet"
-          extensions: "js"
+          eslint-config-path: "./example/django_demo/nsfwjsapi/.eslintrc.yml"
+          custom-directory: "./example/django_demo/nsfwjsapi"
