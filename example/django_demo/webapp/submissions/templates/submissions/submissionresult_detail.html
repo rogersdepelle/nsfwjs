@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Indecent content checking</title>
+</head>
+<body>
+  <h2>Indecent content checking</h2>
+  Submission ID: {{ object.id }}<br>
+  Submited at: {{ object.created_at }}<br>
+  <h3>Results:</h3>
+  {% for result in object.results.all %}
+    <p>{{ result.class_name }}: {{ result.probability }}</p>
+  {% endfor %}
+  <a href="{% url 'submission-result-create' %}">New content check</a>
+</body>
+</html>
