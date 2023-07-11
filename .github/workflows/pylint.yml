@@ -1,0 +1,21 @@
+name: PyLint
+
+on:
+  push:
+    paths:
+      - "./example/django_demo"
+
+jobs:
+  pylint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-python@v4
+        with:
+          python-version: "3.11"
+      - uses: psf/black@stable
+        with:
+          options: "--check --verbose --line-length=120"
+      - uses: py-actions/flake8@v2
+        with:
+          max-line-length: "120"

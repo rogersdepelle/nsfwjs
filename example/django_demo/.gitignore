@@ -1,0 +1,32 @@
+# python
+*~
+*.pye
+*.pyc
+*.lock
+**/__pycache__/
+.vscode
+.coverage
+.idea
+venv
+mediafiles
+*.sqlite3
+*.DS_Store
+
+# node
+logs
+*.log
+npm-debug.log*
+pids
+*.pid
+*.seed
+lib-cov
+coverage
+.nyc_output
+.grunt
+.lock-wscript
+build/Release
+node_modules
+jspm_packages
+.npm
+.node_repl_history
+.next
