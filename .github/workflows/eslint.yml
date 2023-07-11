@@ -18,3 +18,4 @@ jobs:
         with:
           eslint-config-path: "./example/django_demo/nsfwjsapi/.eslintrc.yml"
           custom-directory: "./example/django_demo/nsfwjsapi"
+          repo-token: ${{secrets.GITHUB_TOKEN}}
