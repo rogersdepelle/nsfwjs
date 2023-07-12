@@ -3,6 +3,10 @@ import uuid
 
 import requests
 
+from io import BytesIO
+from PIL import Image
+
+from django.core.files.base import ContentFile
 from django.db import models
 from django.urls import reverse
 
@@ -32,7 +36,20 @@ class SubmissionResult(models.Model):
                 probability=result["probability"],
             )
 
+    def convert_to_jpeg(self):
+        filename = "%s.jpg" % self.image.name.split(".")[0]
+        image = Image.open(self.image)
+        if image.mode in ("RGBA", "LA"):
+            background = Image.new(image.mode[:-1], image.size, "#fff")
+            background.paste(image, image.split()[-1])
+            image = background
+        image_io = BytesIO()
+        image.save(image_io, format="JPEG", quality=100)
+        self.image.save(filename, ContentFile(image_io.getvalue()), save=False)
+
     def save(self, *args, **kwargs):
+        if self.image:
+            self.convert_to_jpeg()
         super(SubmissionResult, self).save(*args, **kwargs)
         self.check_content()
 
