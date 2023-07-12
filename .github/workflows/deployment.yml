@@ -9,6 +9,19 @@ jobs:
   deployment:
     runs-on: self-hosted
     steps:
-      - run: docker-compose -f docker-compose.yml -f docker-compose.production.yml build
-      - run: docker-compose -f docker-compose.yml -f docker-compose.production.yml down --remove-orphans
-      - run: docker-compose -f docker-compose.yml -f docker-compose.production.yml up -d
+      - uses: actions/checkout@v3
+      - run: |
+          docker-compose -f docker-compose.yaml -f docker-compose.production.yaml build
+          docker-compose -f docker-compose.yaml -f docker-compose.production.yaml down --remove-orphans
+          docker-compose -f docker-compose.yaml -f docker-compose.production.yaml up -d
+        working-directory: example/django_demo
+        env:
+          POSTGRES_ENGINE: ${{ secrets.POSTGRES_ENGINE }}
+          POSTGRES_DB: ${{ secrets.POSTGRES_DB }}
+          POSTGRES_USER: ${{ secrets.POSTGRES_USER }}
+          POSTGRES_PASSWORD: ${{ secrets.POSTGRES_PASSWORD }}
+          POSTGRES_HOST: ${{ secrets.POSTGRES_HOST }}
+          POSTGRES_PORT: ${{ secrets.POSTGRES_PORT }}
+          NSFW_API: ${{ secrets.NSFW_API }}
+          SITE_URL: ${{ secrets.SITE_URL }}
+          SECRET_KEY: ${{ secrets.SECRET_KEY }}

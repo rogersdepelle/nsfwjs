@@ -25,6 +25,7 @@ if MODE == "development":
 else:
     DEBUG = False
     ALLOWED_HOSTS = [f".{SITE_URL}"]
+    CSRF_TRUSTED_ORIGINS = [f"https://{SITE_URL}"]
 
 
 # Application definition

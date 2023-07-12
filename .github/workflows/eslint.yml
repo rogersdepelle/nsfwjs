@@ -10,12 +10,7 @@ jobs:
       - uses: actions/setup-node@v3
         with:
           node-version: 20
-      - name: npm install
-        working-directory: ./example/django_demo/nsfwjsapi
-        run: npm i --ignore-scripts
-      - name: Run ESLint
-        uses: ninosaurus/eslint-check@v5
-        with:
-          eslint-config-path: "./example/django_demo/nsfwjsapi/.eslintrc.yml"
-          custom-directory: "./example/django_demo/nsfwjsapi"
-          repo-token: ${{secrets.GITHUB_TOKEN}}
+      - run: |
+          npm i --ignore-scripts
+          npx eslint .
+        working-directory: example/django_demo/nsfwjsapi

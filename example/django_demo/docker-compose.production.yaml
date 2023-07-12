@@ -6,7 +6,7 @@ services:
     build:
       args:
         MODE: production
-    command: gunicorn --bind :8000 --workers 5 core.wsgi:application
+    command: gunicorn --bind :8000 --workers 5 webapp.wsgi:application
     environment:
       - POSTGRES_ENGINE=${POSTGRES_ENGINE}
       - POSTGRES_DB=${POSTGRES_DB}
@@ -15,6 +15,14 @@ services:
       - POSTGRES_HOST=${POSTGRES_HOST}
       - POSTGRES_PORT=${POSTGRES_PORT}
       - NSFW_API=${NSFW_API}
+      - SITE_URL=${SITE_URL}
+      - SECRET_KEY=${SECRET_KEY}
+
+  postgres:
+    environment:
+      - POSTGRES_DB=${POSTGRES_DB}
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
 
   nsfwjsapi:
     environment:
@@ -29,9 +37,12 @@ services:
       - 443:443
     volumes:
       - ssl_data:/etc/resty-auto-ssl
-      - mediafiles:/webapp/core/mediafiles
+      - mediafiles:/webapp/webapp/mediafiles
     environment:
       ALLOWED_DOMAINS: ${SITE_URL}
       SITES: ${SITE_URL}=webapp:8000
     depends_on:
       - webapp
+
+volumes:
+  ssl_data:
